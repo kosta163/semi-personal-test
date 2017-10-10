@@ -14,26 +14,24 @@ public class CreateBoardDAO extends BoardDAO {
 	
 	//창작 글 작성 start
 	@Override
-	public void insertBoard(BoardVO board) throws SQLException {
-		@SuppressWarnings("unused") //<-- 주석 해제 시 지우세요.
+	public void insertBoard(BoardVO board) throws SQLException {	
 		CreateBoardVO cbvo = (CreateBoardVO) board;
 		Connection con=null;
 		PreparedStatement pstmt=null;
 		try {
 			con=getConnection();
-			/*
-			
+				
 			//board table insert
 			StringBuilder sql= new StringBuilder();
-			sql.append("insert into board(board_no, boardtype_no, id, board_regdate, hit, sympathy, authority, bg_no) ");
-			sql.append("values(board_seq.nextval, 3, 'orangss@naver.com', sysdate, 0, 0, 1, 0) ");
+			sql.append("insert into board(board_no, boardtype_no, id, board_regdate, hit, authority, bg_no) ");
+			sql.append("values(board_seq.nextval, 3, 'orangss@naver.com', sysdate, 0, 1, 0) ");
 			pstmt=con.prepareStatement(sql.toString());
 			pstmt.executeUpdate();
 			pstmt.close();
-			
+
 			//create_board table insert
 			StringBuilder sql2= new StringBuilder();
-			sql2.append("insert into create_board(board_no, create_title, create_content, category) ");
+			sql2.append("insert into create_board(board_no, create_title, create_content, category) ");			
 			sql2.append("values(board_seq.currval, ?, ?, ?) ");
 			pstmt=con.prepareStatement(sql2.toString());
 			pstmt.setString(1, cbvo.getCreate_title());
@@ -41,7 +39,7 @@ public class CreateBoardDAO extends BoardDAO {
 			pstmt.setInt(3, cbvo.getCategory());
 			pstmt.executeUpdate();
 			
-			*/
+			
 		}finally {
 			closeAll(pstmt, con);
 		}
@@ -54,7 +52,7 @@ public class CreateBoardDAO extends BoardDAO {
 		System.out.println("CreateBoardDAO, updateBoard() 실행");
 	}
 	//창작 글 수정 end
-	//dddddd
+	
 	//창작 글 삭제 start
 	@Override
 	public void deleteBoard(int boardNo) throws SQLException {
