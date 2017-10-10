@@ -13,7 +13,8 @@
 				<div class="well bs-component col-lg-12">
 					<div class="col-lg-1"></div>
 					<div class="col-lg-10">
-					<form class="form-horizontal">
+					<form class="form-horizontal" action="DispatcherServlet" id="create">
+					<input type="hidden" name="command" value="createpostwrite">
 						<fieldset>
 							<legend>창작하기</legend>
 							<!-- 독후감 제목 -->
@@ -32,14 +33,14 @@
 									</select>
 								</div>
 								<div class="col-lg-10">
-									<input type="password" class="form-control" id="title" name="title" placeholder="독후감 제목">
+									<input type="text" class="form-control" id="title" name="title" placeholder="독후감 제목">
 								</div>
 							</div>
 							
 							<!-- 내용 입력 부분 -->
 							<div class="form-group">
 								<div class="col-lg-12">
-									<textarea class="form-control ta" rows="30" id="content" placeholder="내용을 입력하세요."></textarea>
+									<textarea class="form-control ta" rows="30" id="content" name="content" placeholder="내용을 입력하세요."></textarea>
 						      	</div>
 						    </div>
 						    
@@ -100,10 +101,9 @@
 		<div class="row" style="text-align:center; margin-top: 25px; margin-bottom: 50px">
 			<div class="col-lg-12">
 				<button type="reset" class="btn btn-default">작성 취소</button>
-				<button type="submit" class="btn btn-primary">작성 완료</button>
+				<button type="submit" class="btn btn-primary" form="create">작성 완료</button>
 			</div>
 		</div>
 	</div>
-	
 </div>
 <!-- /.container -->

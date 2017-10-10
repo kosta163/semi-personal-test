@@ -41,7 +41,13 @@ public class CreateBoardVO extends BoardVO{
 		this.create_content = create_content;
 		this.category = category;
 	}
-
+	public CreateBoardVO(int board_no, int boardtype_no, String id, String board_regdate, int hit,
+			int authority, int bg_no, String create_title, String create_content, int category) {
+		super(board_no, boardtype_no, id, board_regdate, hit, authority, bg_no);
+		this.create_title = create_title;
+		this.create_content = create_content;
+		this.category = category;
+	}
 	public String getCreate_title() {
 		return create_title;
 	}

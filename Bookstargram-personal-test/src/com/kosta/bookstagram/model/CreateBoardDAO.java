@@ -24,8 +24,9 @@ public class CreateBoardDAO extends BoardDAO {
 			//board table insert
 			StringBuilder sql= new StringBuilder();
 			sql.append("insert into board(board_no, boardtype_no, id, board_regdate, hit, authority, bg_no) ");
-			sql.append("values(board_seq.nextval, 3, 'orangss@naver.com', sysdate, 0, 1, 0) ");
+			sql.append("values(board_seq.nextval, 3, ?, sysdate, 0, 1, 0) ");
 			pstmt=con.prepareStatement(sql.toString());
+			pstmt.setString(1, cbvo.getId());
 			pstmt.executeUpdate();
 			pstmt.close();
 
@@ -37,8 +38,7 @@ public class CreateBoardDAO extends BoardDAO {
 			pstmt.setString(1, cbvo.getCreate_title());
 			pstmt.setString(2, cbvo.getCreate_content());
 			pstmt.setInt(3, cbvo.getCategory());
-			pstmt.executeUpdate();
-			
+			pstmt.executeUpdate();	
 			
 		}finally {
 			closeAll(pstmt, con);
@@ -60,7 +60,7 @@ public class CreateBoardDAO extends BoardDAO {
 		PreparedStatement pstmt=null;
 		try {
 			con=getConnection(); 
-			/*
+			
 			
 			String sql="DELETE FROM create_board WHERE board_no=?";
 			pstmt=con.prepareStatement(sql);
@@ -73,7 +73,7 @@ public class CreateBoardDAO extends BoardDAO {
 			pstmt.setInt(1, boardNo);
 			pstmt.executeUpdate();
 			
-			*/
+			
 		}finally {
 			closeAll(pstmt, con);
 		}
@@ -89,10 +89,10 @@ public class CreateBoardDAO extends BoardDAO {
 		ResultSet rs=null;
 		try {
 			con=getConnection();
-			/*
+			
 			
 			StringBuilder sql= new StringBuilder();
-			sql.append("SELECT b.board_no,b.boardtype_no,b.id,b.board_regdate,b.hit,b.sympathy,b.authority, ");
+			sql.append("SELECT b.board_no,b.boardtype_no,b.id,b.board_regdate,b.hit,b.authority, ");
 			sql.append("b.bg_no,cb.create_title,cb.create_content,cb.category ");
 			sql.append("FROM board b,create_board cb ");
 			sql.append("WHERE b.board_no=cb.board_no and b.board_no=?" );
@@ -102,13 +102,14 @@ public class CreateBoardDAO extends BoardDAO {
 			
 			if(rs.next()) {
 				cbvo=new CreateBoardVO(rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getString(4),
-				rs.getInt(5),rs.getInt(6),rs.getInt(7),rs.getInt(8),rs.getString(9),rs.getString(10),rs.getInt(11));
+				rs.getInt(5),rs.getInt(6),rs.getInt(7),rs.getString(8),rs.getString(9),rs.getInt(10));
 			}
 			
-			*/
+			
 		}finally {
 			closeAll(rs, pstmt, con);
 		}
+
 		return cbvo;
 	}
 	//창작 글 상세보기 end
@@ -122,22 +123,19 @@ public class CreateBoardDAO extends BoardDAO {
 		ResultSet rs = null;
 		try {
 			con = getConnection();
-			/*
 			
 			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT b.board_no,b.boardtype_no,b.id,b.board_regdate,b.hit,b.sympathy,b.authority, ");
-			sql.append("b.bg_no,cb.create_title,cb.create_content,cb.category ");
+			sql.append("SELECT b.board_no,b.boardtype_no,b.id,b.board_regdate,b.hit, ");
+			sql.append("b.authority,b.bg_no,cb.create_title,cb.create_content,cb.category ");
 			sql.append("FROM board b,create_board cb ");
 			sql.append("WHERE b.board_no=cb.board_no order by b.board_no desc ");
 			pstmt = con.prepareStatement(sql.toString());
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
-				list.add(new CreateBoardVO(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getInt(5),
-						rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getInt(11)));
+				list.add(new CreateBoardVO(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4),
+						rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getString(8), rs.getString(9), rs.getInt(10)));
 			}
-			
-			*/
 		} finally {
 			closeAll(rs, pstmt, con);
 		}

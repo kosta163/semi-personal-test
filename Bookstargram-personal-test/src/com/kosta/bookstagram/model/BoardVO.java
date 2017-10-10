@@ -61,6 +61,17 @@ public class BoardVO {
 		this.authority = authority;
 		this.bg_no = bg_no;
 	}
+	
+	public BoardVO(int board_no, int boardtype_no, String id, String board_regdate, int hit, int authority, int bg_no) {
+		super();
+		this.board_no = board_no;
+		this.boardtype_no = boardtype_no;
+		this.id = id;
+		this.board_regdate = board_regdate;
+		this.hit = hit;
+		this.authority = authority;
+		this.bg_no = bg_no;
+	}
 
 	public int getBoard_no() {
 		return board_no;
