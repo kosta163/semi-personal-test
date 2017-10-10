@@ -54,7 +54,7 @@ public class CreateBoardDAO extends BoardDAO {
 		System.out.println("CreateBoardDAO, updateBoard() 실행");
 	}
 	//창작 글 수정 end
-	
+	//dddddd
 	//창작 글 삭제 start
 	@Override
 	public void deleteBoard(int boardNo) throws SQLException {
