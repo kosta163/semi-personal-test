@@ -1,20 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
-<script type="text/javascript">
-function contentCheck(){
-	var flag=true;
-	var f=document.create;
-	if(f.title.value==""){
-		alert("제목을 입력하세요!");
-		flag=false;
-	}else if(f.content.value==""){
-		alert("내용을 입력하세요!");
-		flag=false;
-	}
-	return flag;
-}
-</script>
 <!-- 기능의 UI를 담당하는 부분(컨테이너) -->
 <div class="container">
 	<!-- 현재 페이지의 타이틀  -->
@@ -28,8 +13,8 @@ function contentCheck(){
 				<div class="well bs-component col-lg-12">
 					<div class="col-lg-1"></div>
 					<div class="col-lg-10">
-					<form class="form-horizontal" action="DispatcherServlet" id="create" name="create" onsubmit="return contentCheck()">
-					<input type="hidden" name="command" value="createpostwrite">
+					<form class="form-horizontal" action="DispatcherServlet" id="update">
+					<input type="hidden" name="command" value="createpostupdate">
 						<fieldset>
 							<legend>창작하기</legend>
 							<!-- 독후감 제목 -->
@@ -48,14 +33,14 @@ function contentCheck(){
 									</select>
 								</div>
 								<div class="col-lg-10">
-									<input type="text" class="form-control" id="title" name="title" placeholder="독후감 제목">
+									<input type="text" class="form-control" id="title" name="title" value="${requestScope.cbdvo.create_title}">
 								</div>
 							</div>
 							
 							<!-- 내용 입력 부분 -->
 							<div class="form-group">
 								<div class="col-lg-12">
-									<textarea class="form-control ta" rows="30" id="content" name="content" placeholder="내용을 입력하세요."></textarea>
+									<textarea class="form-control ta" rows="30" id="content" name="content">${requestScope.cbdvo.create_content}</textarea>
 						      	</div>
 						    </div>
 						    
@@ -116,7 +101,7 @@ function contentCheck(){
 		<div class="row" style="text-align:center; margin-top: 25px; margin-bottom: 50px">
 			<div class="col-lg-12">
 				<button type="reset" class="btn btn-default">작성 취소</button>
-				<button type="submit" class="btn btn-primary" form="create">작성 완료</button>
+				<button type="submit" class="btn btn-primary" form="update">작성 완료</button>
 			</div>
 		</div>
 	</div>

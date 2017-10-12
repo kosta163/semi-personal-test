@@ -10,20 +10,20 @@ import com.kosta.bookstagram.controller.listener.Controller;
 import com.kosta.bookstagram.model.CreateBoardDAO;
 import com.kosta.bookstagram.model.CreateBoardVO;
 
-public class CreationPostWriteController implements Controller {
+public class CreationPostUpdateViewController implements Controller {
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-		String create_title=request.getParameter("title");
-		String create_content=request.getParameter("content");
-		int category=Integer.parseInt(request.getParameter("tend_code"));
-		CreateBoardVO createVO = new CreateBoardVO(3, "kjhsc101218@naver.com", 1,1, create_title, create_content, category);
-		try {									  
-			CreateBoardDAO.getInstance().insertBoard(createVO);
+		int boardNo=Integer.parseInt(request.getParameter("board_no"));
+		CreateBoardVO cbvo;
+		try {
+			cbvo = (CreateBoardVO) CreateBoardDAO.getInstance().selectBoard(boardNo);
+			request.setAttribute("cbdvo", cbvo);
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "redirect:ex-creation.jsp";
+		return "ex-creation_updateview.jsp";
 	}
 
 }

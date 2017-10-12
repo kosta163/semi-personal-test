@@ -52,13 +52,8 @@ public abstract class BoardDAO extends CommonDAO implements BoardListener{
 	}
 
 	@Override
-	public void likeBoard(String id, int boardNo) throws SQLException {
+	public void likeService(String id, int boardNo) throws SQLException {
 		System.out.println("likeBoard() 실행");
-	}
-
-	@Override
-	public void cancelLike(String id, int boardNo) throws SQLException {
-		System.out.println("cancelLike() 실행");
 	}
 
 	@Override
@@ -148,5 +143,10 @@ public abstract class BoardDAO extends CommonDAO implements BoardListener{
 	 * @return	ArrayList<BoardVO>	게시판의 타입번호로 조회한 게시판의 리스트
 	 * @throws	SQLException
 	 */
-	public abstract ArrayList<BoardVO> boardList(int boardType) throws SQLException;
+	public abstract ArrayList<BoardVO> boardList() throws SQLException;
+	
+	/*
+	 * 게시판의 전체 게시글을 보여주는 내용입니다.
+	 */
+	public abstract int totalCountByBoard() throws SQLException;    
 }

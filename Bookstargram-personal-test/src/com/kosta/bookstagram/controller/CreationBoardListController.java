@@ -15,18 +15,17 @@ public class CreationBoardListController implements Controller {
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-		int boardType=3;	
 		ArrayList<CreateBoardVO> list=new ArrayList<CreateBoardVO>();
 		try {
-			for(int i=0; i<CreateBoardDAO.getInstance().boardList(boardType).size();i++) {
-				list.add((CreateBoardVO)CreateBoardDAO.getInstance().boardList(1).get(i));
+			for(int i=0; i<CreateBoardDAO.getInstance().boardList().size();i++) {
+				list.add((CreateBoardVO)CreateBoardDAO.getInstance().boardList().get(i));
 			}	
 			request.setAttribute("clist", list);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return"layout/body/creation_list.jsp";
+		return "layout/body/creation_list.jsp";
 	}
 
 }

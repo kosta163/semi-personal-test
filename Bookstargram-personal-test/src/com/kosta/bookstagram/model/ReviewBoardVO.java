@@ -2,14 +2,6 @@ package com.kosta.bookstagram.model;
 
 public class ReviewBoardVO extends BoardVO{
 	/*
-	 * 도서 제목
-	 */
-	private  String book_title;
-	/*
-	 * 도서 저자
-	 */
-	private  String book_author;
-	/*
 	 * 책 리뷰 게시글 제목
 	 */
 	private  String review_title;
@@ -22,68 +14,94 @@ public class ReviewBoardVO extends BoardVO{
 	 */
 	private  int star_point;
 	/*
-	 * 책 썸네일(미리보기 이미지)
-	 */
-	private  String book_img;
-	/*
 	 * 책의 장르
 	 */
 	private  int genre;
 	/*
-	 * 기본생성자
+	 * 책 번호
+	 */
+	private  int book_no;
+	/*
+	 * 기본 생성자
 	 */
 	public ReviewBoardVO() {}
-	
 	/**
-	 * -----super-----
-	 * @param board_no			게시판번호
-	 * @param boardtype_no		게시판타입번호
+	 * -모든 매개변수를 갖고있는 생성자<br/>
+	 * @param board_no			게시글번호
+	 * @param boardtype_no		게시글타입번호
 	 * @param id				아이디
-	 * @param board_regdate		등록일자
+	 * @param nick				닉네임
+	 * @param board_regdate		게시글등록일짜
 	 * @param hit				조회수
 	 * @param sympathy			공감
-	 * @param authority			공개권한
-	 * @param bg_no				게시판배경번호
-	 * ------this------
-	 * @param book_title		책제목
-	 * @param book_author		책저자
-	 * @param review_title		게시글제목
-	 * @param review_content	게시글내용
-	 * @param star_point		책별점
-	 * @param book_img			책썸네일
-	 * @param genre				책장르
-	 * 
-	 * -매개변수 15개를 입력받아 부모클래스와 자식클래스의 변수에 데이터 세팅
+	 * @param authority			게시글공개권한
+	 * @param bg_no				게시글배경번호
+	 * @param review_title		독후감제목
+	 * @param review_content	독후감내용
+	 * @param star_point		독후감별점
+	 * @param genre				독후감장르
+	 * @param book_no			독후감 책번호
 	 */
-	public ReviewBoardVO(int board_no, int boardtype_no, String id, String board_regdate, int hit, int sympathy,
-			int authority, int bg_no, String book_title, String book_author, String review_title, String review_content,
-			int star_point, String book_img, int genre) {
-		super(board_no, boardtype_no, id, board_regdate, hit, sympathy, authority, bg_no);
-		this.book_title = book_title;
-		this.book_author = book_author;
+	public ReviewBoardVO(int board_no, int boardtype_no, String id, String nick, String board_regdate, int hit,
+			int sympathy, int authority, int bg_no, String review_title, String review_content, int star_point,
+			int genre, int book_no) {
+		super(board_no, boardtype_no, id, nick, board_regdate, hit, sympathy, authority, bg_no);
 		this.review_title = review_title;
 		this.review_content = review_content;
 		this.star_point = star_point;
-		this.book_img = book_img;
 		this.genre = genre;
+		this.book_no = book_no;
 	}
-
-	public String getBook_title() {
-		return book_title;
+	
+	/**
+	 * -리뷰 게시글 작성용 생성자입니다.<br/>
+	 * @param boardtype_no		게시글타입번호
+	 * @param id				아이디
+	 * @param authority			공개권한
+	 * @param bg_no				게시글배경번호
+	 * @param review_title		리뷰제목
+	 * @param review_content	리뷰내용
+	 * @param star_point		리뷰별점
+	 * @param genre				리뷰장르
+	 * @param book_no			책번호
+	 */
+	public ReviewBoardVO(int boardtype_no, String id, int authority, int bg_no,
+			String review_title, String review_content, int star_point, int genre, int book_no) {
+		super(boardtype_no, id, authority, bg_no);
+		this.review_title = review_title;
+		this.review_content = review_content;
+		this.star_point = star_point;
+		this.genre = genre;
+		this.book_no = book_no;
 	}
-
-	public void setBook_title(String book_title) {
-		this.book_title = book_title;
+	
+	/**
+	 * -리뷰 게시글 상세보기용 생성자입니다.<br/>
+	 * @param board_no			게시글번호
+	 * @param boardtype_no		게시글타입번호
+	 * @param nick				닉네임
+	 * @param board_regdate		게시글등록일자
+	 * @param hit				조회수
+	 * @param sympathy			공감
+	 * @param authority			공개권한
+	 * @param bg_no				게시글배경번호
+	 * @param review_title		리뷰제목
+	 * @param review_content	리뷰내용
+	 * @param star_point		리뷰별점
+	 * @param genre				리뷰장르
+	 * @param book_no			리뷰책번호
+	 */
+	public ReviewBoardVO(int board_no, int boardtype_no, String nick, String board_regdate, int hit, int sympathy,
+			int authority, int bg_no, String review_title, String review_content, int star_point, int genre,
+			int book_no) {
+		super(board_no, boardtype_no, nick, board_regdate, hit, authority, bg_no);
+		this.review_title = review_title;
+		this.review_content = review_content;
+		this.star_point = star_point;
+		this.genre = genre;
+		this.book_no = book_no;
 	}
-
-	public String getBook_author() {
-		return book_author;
-	}
-
-	public void setBook_author(String book_author) {
-		this.book_author = book_author;
-	}
-
+	
 	public String getReview_title() {
 		return review_title;
 	}
@@ -108,14 +126,6 @@ public class ReviewBoardVO extends BoardVO{
 		this.star_point = star_point;
 	}
 
-	public String getBook_img() {
-		return book_img;
-	}
-
-	public void setBook_img(String book_img) {
-		this.book_img = book_img;
-	}
-
 	public int getGenre() {
 		return genre;
 	}
@@ -124,14 +134,11 @@ public class ReviewBoardVO extends BoardVO{
 		this.genre = genre;
 	}
 
-	@Override
-	public String toString() {
-		return "ReviewBoardVO [book_title=" + book_title + ", book_author=" + book_author + ", review_title="
-				+ review_title + ", review_content=" + review_content + ", star_point=" + star_point + ", book_img="
-				+ book_img + ", genre=" + genre + ", getBoard_no()=" + getBoard_no() + ", getBoardtype_no()="
-				+ getBoardtype_no() + ", getId()=" + getId() + ", getBoard_regdate()=" + getBoard_regdate()
-				+ ", getHit()=" + getHit() + ", getSympathy()=" + getSympathy() + ", getAuthority()=" + getAuthority()
-				+ ", getBg_no()=" + getBg_no() + ", toString()=" + super.toString() + ", getClass()=" + getClass()
-				+ ", hashCode()=" + hashCode() + "]";
+	public int getBook_no() {
+		return book_no;
+	}
+
+	public void setBook_no(int book_no) {
+		this.book_no = book_no;
 	}
 }
