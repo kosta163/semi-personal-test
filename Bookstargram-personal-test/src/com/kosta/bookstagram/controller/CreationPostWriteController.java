@@ -25,5 +25,4 @@ public class CreationPostWriteController implements Controller {
 		}
 		return "redirect:ex-creation.jsp";
 	}
-
 }

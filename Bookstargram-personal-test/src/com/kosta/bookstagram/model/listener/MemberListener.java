@@ -3,8 +3,10 @@ package com.kosta.bookstagram.model.listener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.kosta.bookstagram.model.BoardVO;
+import com.kosta.bookstagram.model.CreateBoardVO;
+import com.kosta.bookstagram.model.LineBoardVO;
 import com.kosta.bookstagram.model.MemberVO;
+import com.kosta.bookstagram.model.ReviewBoardVO;
 import com.kosta.bookstagram.model.common.PagingBean;
 
 public interface MemberListener {
@@ -83,18 +85,25 @@ public interface MemberListener {
 	 *
 	 *  @throws SQLException
 	 */
-	public ArrayList<BoardVO> viewBoard(int boardType, PagingBean pagingBean) throws SQLException;
-
-
+	public ArrayList<LineBoardVO> l_viewBoard(String id,PagingBean pagingBean) throws SQLException;
+		
+	public ArrayList<ReviewBoardVO> r_viewBoard(String id,PagingBean pagingBean) throws SQLException;
+		
+	public ArrayList<CreateBoardVO> c_viewBoard(String id,PagingBean pagingBean) throws SQLException;
+		
 	/**
 	 * <pre>
 	 * <b>메서드 설명</b>
-	 *    -게시글의 개수를 받아오는 기능입니다
+	 *    -게시판 종류와 회원 아이디를 매개변수로 받아
+	 *     게시판 종류에 따른 회원의 게시물의 count를 받아오는 메서드
+	 *     (PagingBean의 totalCount에서 사용)
 	 * </pre>
 	 * 
-	 * @param    boardType     게시글 타입번호
-	 * @param    id            사용자 id
-	 * @throws   SQLException
+	 * @return 	int 		게시물 개수
+	 * @param 	boardType 	게시판번호
+	 * @param 	id 			회원 id
+	 * @throws SQLException
+	 * 
 	 */
 	public int totalCountByBoardNId(int boardType, String id) throws SQLException;
 }

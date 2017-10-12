@@ -70,7 +70,7 @@ public class BoardVO {
 	
 	/**
 	 * 창작 게시글 작성에 필요한 부모생성자<br/>
-	 * -공감,게시판번호, 닉네임 제외된 생성자<br/>
+	 * -공감,닉네임 제외된 생성자<br/>
 	 * @param boardtype_no		게시글타입번호
 	 * @param id				아이디
 	 * @param authority			공개권한
@@ -113,33 +113,33 @@ public class BoardVO {
 	 * @param authority			공개권한
 	 * @param bg_no				배경번호
 	 */
-	public BoardVO(int board_no, int boardtype_no, String nick, String board_regdate, int hit, 
+	public BoardVO(int board_no, int boardtype_no, String nick, String board_regdate, int hit,
 	         int authority, int bg_no) {
-	      super();
-	      this.board_no = board_no;
-	      this.boardtype_no = boardtype_no;
-	      this.nick = nick;
-	      this.board_regdate = board_regdate;
-	      this.hit = hit;
-	      this.authority = authority;
-	      this.bg_no = bg_no;
+	     super();
+	     this.board_no = board_no;
+	     this.boardtype_no = boardtype_no;
+	     this.nick = nick;
+	     this.board_regdate = board_regdate;
+	     this.hit = hit;
+	     this.authority = authority;
+	     this.bg_no = bg_no;
 	}
-
+	
 	/**
-	 * 창작게시글 목록보기  필요한 부모생성자<br/>
-	 * @param board_no			게시글번호
-	 * @param nick				닉네임
+	 * 창작게시글 목록보기 필요한 부모 생성자<br/>
+	 * @param board_no        	게시글번호
+	 * @param nick            	닉네임
 	 * @param board_regdate		게시글생성일짜
 	 * @param hit				조회수
 	 */
 	public BoardVO(int board_no, String nick, String board_regdate, int hit) {
-		super();
-		this.board_no = board_no;
-		this.nick = nick;
-		this.board_regdate = board_regdate;
-		this.hit = hit;
+	    super();
+	    this.board_no = board_no;
+	    this.nick = nick;
+	    this.board_regdate = board_regdate;
+	    this.hit = hit;
 	}
-	
+
 	public int getBoard_no() {
 		return board_no;
 	}

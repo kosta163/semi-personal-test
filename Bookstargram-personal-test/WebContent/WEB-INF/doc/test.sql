@@ -59,3 +59,4 @@ WHERE board_no='21';
 update CREATE_BOARD
 set	create_title='ㅋㅋ',create_content='zz',category='4'
 where board_no='15';
+

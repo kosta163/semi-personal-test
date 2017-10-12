@@ -25,16 +25,23 @@ public class MemberDAO extends CommonDAO implements MemberListener {
 	@Override
 	public MemberVO checkMember(String id, String pw) throws SQLException {
 		MemberVO member = null;
-
-		PreparedStatement pstmt = getConnection().prepareStatement(MemberSQL.checkMember);
-		pstmt.setString(1, id);
-		pstmt.setString(2, pw);
-		ResultSet rs = pstmt.executeQuery();
-
-		while (rs.next())
-			member = new MemberVO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
-					rs.getString(6), rs.getInt(8), rs.getInt(9), rs.getInt(10), rs.getInt(11), rs.getInt(12),
-					rs.getString(13));
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement(MemberSQL.checkMember);
+			pstmt.setString(1, id);
+			pstmt.setString(2, pw);
+			rs = pstmt.executeQuery();
+	
+			while (rs.next())
+				member = new MemberVO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5),
+						rs.getString(6), rs.getInt(8), rs.getInt(9), rs.getInt(10), rs.getInt(11), rs.getInt(12),
+						rs.getString(13));
+		}finally {
+			closeAll(rs, pstmt, con);
+		}
 
 		return member;
 	}
@@ -64,40 +71,154 @@ public class MemberDAO extends CommonDAO implements MemberListener {
 		System.out.println("withDrawMember() 실행");
 	}
 
+	/**
+	 * <pre>
+	 * <b>메서드 설명</b>
+	 *    -한줄 게시판의 내 게시물 가져오기
+	 * </pre>
+	 * 
+	 * @return 	ArrayList<LineBoardVO>		한줄 게시판 게시물
+	 * @param 	id 							회원 id
+	 * @param 	pagingBean 					PagingBean
+	 * @throws SQLException
+	 * 
+	 */
 	@Override
-	public ArrayList<BoardVO> viewBoard(int boardType, PagingBean pagingBean) throws SQLException {
-		System.out.println("viewBoard() 실행");
-		return null;
+	public ArrayList<LineBoardVO> l_viewBoard(String id,PagingBean pagingBean) throws SQLException {
+		ArrayList<LineBoardVO> list=new ArrayList<LineBoardVO>();
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		try{
+			con=getConnection(); 
+			StringBuilder sql=new StringBuilder();
+			sql.append("SELECT b.board_no,b.id,l.line_content,b.board_regdate,b.hit FROM( ");
+			sql.append("SELECT row_number() over(order by board_no desc) as rnum,board_no,id, ");
+			sql.append("to_char(board_regdate,'YYYY.MM.DD') as board_regdate,hit ");
+			sql.append("FROM BOARD WHERE id=? ");
+			sql.append(") b,LINE_BOARD l where b.board_no=l.board_no and rnum between ? and ? ");
+			sql.append("order by board_no desc ");
+			pstmt=con.prepareStatement(sql.toString());
+			pstmt.setString(1, id);
+			pstmt.setInt(2, pagingBean.getStartRowNumber());
+			pstmt.setInt(3, pagingBean.getEndRowNumber());
+			rs=pstmt.executeQuery();	
+			//목록에서 게시물 content는 필요없으므로 null로 setting
+			//select no,title,time_posted,hits,id,name
+			while(rs.next()){		
+				LineBoardVO bvo=new LineBoardVO();
+				bvo.setBoard_no(rs.getInt(1));
+				bvo.setId(rs.getString(2));
+				bvo.setLine_content(rs.getString(3));
+				bvo.setBoard_regdate(rs.getString(4));
+				bvo.setHit(rs.getInt(5));
+				list.add(bvo);			
+			}			
+		}finally{
+			closeAll(rs,pstmt,con);
+		}
+		return list;
+	}
+	/**
+	 * <pre>
+	 * <b>메서드 설명</b>
+	 *    -독후감 게시판의 내 게시물 가져오기
+	 * </pre>
+	 * 
+	 * @return 	ArrayList<ReviewBoardVO>	독후감 게시판 게시물
+	 * @param 	id 							회원 id
+	 * @param 	pagingBean 					PagingBean
+	 * @throws SQLException
+	 * 
+	 */
+	@Override
+	public ArrayList<ReviewBoardVO> r_viewBoard(String id,PagingBean pagingBean) throws SQLException {
+		ArrayList<ReviewBoardVO> list=new ArrayList<ReviewBoardVO>();
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		try{
+			con=getConnection(); 
+			StringBuilder sql=new StringBuilder();
+			sql.append("SELECT b.board_no,b.id,r.review_title,b.board_regdate,b.hit FROM( ");
+			sql.append("SELECT row_number() over(order by board_no desc) as rnum,board_no,id, ");
+			sql.append("to_char(board_regdate,'YYYY.MM.DD') as board_regdate,hit ");
+			sql.append("FROM BOARD WHERE id=? ");
+			sql.append(") b,REVIEW_BOARD r where b.board_no=r.board_no and rnum between ? and ?");
+			sql.append("order by board_no desc ");
+			pstmt=con.prepareStatement(sql.toString());	
+			pstmt.setString(1, id);
+			pstmt.setInt(2, pagingBean.getStartRowNumber());
+			pstmt.setInt(3, pagingBean.getEndRowNumber());
+			rs=pstmt.executeQuery();	
+			//목록에서 게시물 content는 필요없으므로 null로 setting
+			//select no,title,time_posted,hits,id,name
+			while(rs.next()){		
+				ReviewBoardVO bvo=new ReviewBoardVO();
+				bvo.setBoard_no(rs.getInt(1));
+				bvo.setId(rs.getString(2));
+				bvo.setReview_title(rs.getString(3));
+				bvo.setBoard_regdate(rs.getString(4));
+				bvo.setHit(rs.getInt(5));
+				list.add(bvo);			
+			}			
+		}finally{
+			closeAll(rs,pstmt,con);
+		}
+		return list;
 	}
 
 	/**
 	 * <pre>
 	 * <b>메서드 설명</b>
-	 *    -게시판 종류와 회원 아이디를 매개변수로 받아
-	 *     게시판 종류에 따른 회원의 게시물의 count를 받아오는 메서드
-	 *     (PagingBean의 totalCount에서 사용)
+	 *    -창작 게시판의 내 게시물 가져오기
 	 * </pre>
 	 * 
-	 * @return 	int 		게시물 개수
-	 * @param 	boardType 	게시판번호
-	 * @param 	id 			회원 id
+	 * @return 	ArrayList<CreateBoardVO>	창작 게시판 게시물
+	 * @param 	id 							회원 id
+	 * @param 	pagingBean 					PagingBean
 	 * @throws SQLException
 	 * 
 	 */
-	/**
-	 * <pre>
-	 * <b>메서드 설명</b>
-	 *    -게시판 종류와 회원 아이디를 매개변수로 받아
-	 *     게시판 종류에 따른 회원의 게시물의 count를 받아오는 메서드
-	 *     (PagingBean의 totalCount에서 사용)
-	 * </pre>
-	 * 
-	 * @return 	int 		게시물 개수
-	 * @param 	boardType 	게시판번호
-	 * @param 	id 			회원 id
-	 * @throws SQLException
-	 * 
-	 */
+	@Override
+	public ArrayList<CreateBoardVO> c_viewBoard(String id,PagingBean pagingBean) throws SQLException {
+		ArrayList<CreateBoardVO> list=new ArrayList<CreateBoardVO>();
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		try{
+			con=getConnection(); 
+			StringBuilder sql=new StringBuilder();
+			sql.append("SELECT b.board_no,b.id,c.create_title,b.board_regdate,b.hit FROM( ");
+			sql.append("SELECT row_number() over(order by board_no desc) as rnum,board_no,id, ");
+			sql.append("to_char(board_regdate,'YYYY.MM.DD') as board_regdate,hit ");
+			sql.append("FROM BOARD WHERE id=? ");
+			sql.append(") b,CREATE_BOARD c where b.board_no=c.board_no and rnum between ? and ?");
+			sql.append("order by board_no desc ");
+			pstmt=con.prepareStatement(sql.toString());	
+			pstmt.setString(1, id);
+			pstmt.setInt(2, pagingBean.getStartRowNumber());
+			pstmt.setInt(3, pagingBean.getEndRowNumber());
+			
+			rs=pstmt.executeQuery();	
+			//목록에서 게시물 content는 필요없으므로 null로 setting
+			//select no,title,time_posted,hits,id,name
+			while(rs.next()){		
+				CreateBoardVO bvo=new CreateBoardVO();
+				bvo.setBoard_no(rs.getInt(1));
+				bvo.setId(rs.getString(2));
+				bvo.setCreate_title(rs.getString(3));
+				bvo.setBoard_regdate(rs.getString(4));
+				bvo.setHit(rs.getInt(5));
+				list.add(bvo);			
+			}			
+		}finally{
+			closeAll(rs,pstmt,con);
+		}
+		return list;
+	}
+
+
 	@Override
 	public int totalCountByBoardNId(int boardType, String id) throws SQLException {
 		int totalCount = 0;
@@ -120,6 +241,92 @@ public class MemberDAO extends CommonDAO implements MemberListener {
 		} finally {
 			closeAll(rs, pstmt, con);
 		}
+		
 		return totalCount;
 	}
+	
+	/**
+	 * 아이디 중복 체크
+	 */
+	public MemberVO dupleById(String id) throws SQLException {
+		MemberVO member = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement(MemberSQL.dupleById);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			if(rs.next())
+				member = new MemberVO();
+		} finally {
+			closeAll(rs,pstmt,con);
+		}
+		
+		return member;
+	}
+	
+	public MemberVO dupleByNick(String nick) throws SQLException {
+		MemberVO member = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement(MemberSQL.dupleByNick);
+			pstmt.setString(1, nick);
+			rs = pstmt.executeQuery();
+			if(rs.next())
+				member = new MemberVO();
+		} finally {
+			closeAll(rs,pstmt,con);
+		}
+		
+		return member;
+	}
+	
+	/**
+	 * 회원가입 시 비밀번호 찾기 질문
+	 */
+	public ArrayList<PasswordQuestionVO> pwQuestionList() throws SQLException {
+		ArrayList<PasswordQuestionVO> pwQv = new ArrayList<PasswordQuestionVO>();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement(MemberSQL.pwQuestionList);
+			rs = pstmt.executeQuery();
+			while(rs.next())
+				pwQv.add(new PasswordQuestionVO(rs.getInt(1), rs.getString(2)));
+			
+		} finally {
+			closeAll(rs, pstmt, con);
+		}
+		
+		return pwQv;
+	}
+	
+	/**
+	 * 회원가입 시 성향선택 리스트
+	 */
+	public ArrayList<LineTendVO> tendList() throws SQLException {
+		ArrayList<LineTendVO> tendList = new ArrayList<LineTendVO>();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement(MemberSQL.tendList);
+			rs = pstmt.executeQuery();
+			while(rs.next())
+				tendList.add(new LineTendVO(rs.getInt(1), rs.getString(2)));
+		} finally {
+			closeAll(rs, pstmt, con);
+		}
+		
+		return tendList;
+	}
 }
+

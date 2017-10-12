@@ -82,7 +82,6 @@ public class ReviewBoardVO extends BoardVO{
 	 * @param nick				닉네임
 	 * @param board_regdate		게시글등록일자
 	 * @param hit				조회수
-	 * @param sympathy			공감
 	 * @param authority			공개권한
 	 * @param bg_no				게시글배경번호
 	 * @param review_title		리뷰제목
@@ -91,10 +90,32 @@ public class ReviewBoardVO extends BoardVO{
 	 * @param genre				리뷰장르
 	 * @param book_no			리뷰책번호
 	 */
-	public ReviewBoardVO(int board_no, int boardtype_no, String nick, String board_regdate, int hit, int sympathy,
+	public ReviewBoardVO(int board_no, int boardtype_no, String nick, String board_regdate, int hit,
 			int authority, int bg_no, String review_title, String review_content, int star_point, int genre,
 			int book_no) {
 		super(board_no, boardtype_no, nick, board_regdate, hit, authority, bg_no);
+		this.review_title = review_title;
+		this.review_content = review_content;
+		this.star_point = star_point;
+		this.genre = genre;
+		this.book_no = book_no;
+	}
+	
+	/**
+	 * 리뷰 게시글  목록 보기에 필요<br/>
+	 * @param board_no			게시판번호
+	 * @param nick				작성자
+	 * @param board_regdate		등록일자
+	 * @param hit				조회수
+	 * @param review_title		리뷰제목
+	 * @param review_content	리뷰내용
+	 * @param star_point		리뷰별점
+	 * @param genre				리뷰장르
+	 * @param book_no			리뷰책번호
+	 */
+	public ReviewBoardVO(int board_no, String nick, String board_regdate, int hit,
+			String review_title, String review_content, int star_point, int genre, int book_no) {
+		super(board_no, nick, board_regdate, hit);
 		this.review_title = review_title;
 		this.review_content = review_content;
 		this.star_point = star_point;
